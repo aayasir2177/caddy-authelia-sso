@@ -1,0 +1,9 @@
+users:
+  aayasir217:
+    disabled: false
+    displayname: "Yasir"
+    password: '$argon----d...19$------,t=3,p=4$...' #i changed the hashed pass
+    email: "aayasir217@gmail.com"
+    groups:
+      - "admins"
+      - "devs"
