@@ -1,0 +1,38 @@
+(authelia_auth) {
+    forward_auth authelia:9091 {
+        uri /api/verify
+        copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    }
+}
+
+# Authentication Portal
+auth.home.server {
+    tls internal
+    reverse_proxy authelia:9091
+}
+
+# Management Services (SSO Protected)
+dockhand.home.server {
+    tls internal
+    import authelia_auth
+    reverse_proxy dockhand:3000
+}
+
+beszel.home.server {
+    tls internal
+    import authelia_auth
+    reverse_proxy beszel:8090
+}
+
+# User Services (SSO Protected)
+qbt.home.server {
+    tls internal
+    import authelia_auth
+    reverse_proxy qbittorrent:8080
+}
+
+# Standalone Services (Native Auth)
+vault.home.server {
+    tls internal
+    reverse_proxy vaultwarden:80
+}
